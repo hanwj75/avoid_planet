@@ -14,13 +14,6 @@ export const handlerConnection = (socket, uuid) => {
   console.log(`새로운 유저 접속:${uuid} 의 socket ID :${socket.id}`);
   console.log(`현재 접송중인 유저:`, getUser());
 
-  //접속하자마자 시작함
-  //접속하자마자 스테이지의 정보를 넣어줘야함
-  const { stages } = getGameAssets();
-  //stages 배열의 0번째 === 첫 스테이지
-  setStage(uuid, stages.data[0].id);
-  console.log("스테이지:", getStage(uuid));
-
   socket.emit("connection", { uuid }); //connection발사
 };
 
