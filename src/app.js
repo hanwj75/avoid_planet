@@ -10,11 +10,8 @@ const PORT = 3333;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static("public"));
 initSocket(server);
-
-app.get("/", (req, res) => {
-  res.send(`<h1>Hello World</h1>`);
-});
 
 server.listen(PORT, async () => {
   console.log(`${PORT}포트가 열림`);
