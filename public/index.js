@@ -1,11 +1,13 @@
-import Player from './Player.js';
-import Ground from './Ground.js';
-import CactiController from './CactiController.js';
-import Score from './Score.js';
-import ItemController from './ItemController.js';
+import Player from "./Player.js";
+import Ground from "./Ground.js";
+import CactiController from "./CactiController.js";
+import Score from "./Score.js";
+import ItemController from "./ItemController.js";
+import "./Socket.js";
+import { sendEvent } from "./Socket.js";
 
-const canvas = document.getElementById('game');
-const ctx = canvas.getContext('2d');
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
 const GAME_SPEED_START = 1;
 const GAME_SPEED_INCREMENT = 0.00001;
@@ -28,17 +30,17 @@ const GROUND_SPEED = 0.5;
 
 // 선인장
 const CACTI_CONFIG = [
-  { width: 48 / 1.5, height: 100 / 1.5, image: 'images/cactus_1.png' },
-  { width: 98 / 1.5, height: 100 / 1.5, image: 'images/cactus_2.png' },
-  { width: 68 / 1.5, height: 70 / 1.5, image: 'images/cactus_3.png' },
+  { width: 48 / 1.5, height: 100 / 1.5, image: "images/cactus_1.png" },
+  { width: 98 / 1.5, height: 100 / 1.5, image: "images/cactus_2.png" },
+  { width: 68 / 1.5, height: 70 / 1.5, image: "images/cactus_3.png" },
 ];
 
 // 아이템
 const ITEM_CONFIG = [
-  { width: 50 / 1.5, height: 50 / 1.5, id: 1, image: 'images/items/pokeball_red.png' },
-  { width: 50 / 1.5, height: 50 / 1.5, id: 2, image: 'images/items/pokeball_yellow.png' },
-  { width: 50 / 1.5, height: 50 / 1.5, id: 3, image: 'images/items/pokeball_purple.png' },
-  { width: 50 / 1.5, height: 50 / 1.5, id: 4, image: 'images/items/pokeball_cyan.png' },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 1, image: "images/items/pokeball_red.png" },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 2, image: "images/items/pokeball_yellow.png" },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 3, image: "images/items/pokeball_purple.png" },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 4, image: "images/items/pokeball_cyan.png" },
 ];
 
 // 게임 요소들
@@ -126,28 +128,28 @@ function setScreen() {
 }
 
 setScreen();
-window.addEventListener('resize', setScreen);
+window.addEventListener("resize", setScreen);
 
 if (screen.orientation) {
-  screen.orientation.addEventListener('change', setScreen);
+  screen.orientation.addEventListener("change", setScreen);
 }
 
 function showGameOver() {
   const fontSize = 70 * scaleRatio;
   ctx.font = `${fontSize}px Verdana`;
-  ctx.fillStyle = 'grey';
+  ctx.fillStyle = "grey";
   const x = canvas.width / 4.5;
   const y = canvas.height / 2;
-  ctx.fillText('GAME OVER', x, y);
+  ctx.fillText("GAME OVER", x, y);
 }
 
 function showStartGameText() {
   const fontSize = 40 * scaleRatio;
   ctx.font = `${fontSize}px Verdana`;
-  ctx.fillStyle = 'grey';
+  ctx.fillStyle = "grey";
   const x = canvas.width / 14;
   const y = canvas.height / 2;
-  ctx.fillText('Tap Screen or Press Space To Start', x, y);
+  ctx.fillText("Tap Screen or Press Space To Start", x, y);
 }
 
 function updateGameSpeed(deltaTime) {
@@ -163,6 +165,7 @@ function reset() {
   cactiController.reset();
   score.reset();
   gameSpeed = GAME_SPEED_START;
+  sendEvent(2, { timeStamp: Date.now() });
 }
 
 function setupGameReset() {
@@ -170,13 +173,13 @@ function setupGameReset() {
     hasAddedEventListenersForRestart = true;
 
     setTimeout(() => {
-      window.addEventListener('keyup', reset, { once: true });
+      window.addEventListener("keyup", reset, { once: true });
     }, 1000);
   }
 }
 
 function clearScreen() {
-  ctx.fillStyle = 'white';
+  ctx.fillStyle = "white";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
@@ -240,4 +243,4 @@ function gameLoop(currentTime) {
 // 게임 프레임을 다시 그리는 메서드
 requestAnimationFrame(gameLoop);
 
-window.addEventListener('keyup', reset, { once: true });
+window.addEventListener("keyup", reset, { once: true });
