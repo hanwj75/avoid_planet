@@ -26,7 +26,7 @@ export const moveStageHandler = (userId, payload) => {
   const elapsedTime = (serverTime - currentStage.timeStamp) / 1000;
   //1스테이지에서 2스테이지로 넘어가는 가정
   //다음단계 넘어가는부분 과제
-  if (elapsedTime < 100 || elapsedTime > 105) {
+  if (elapsedTime < 10 || elapsedTime > 10.5) {
     return { status: "fail", message: "시간 초과" };
   }
 
@@ -37,5 +37,6 @@ export const moveStageHandler = (userId, payload) => {
   }
 
   setStage(userId, payload.targetStage, serverTime);
-  return { status: "success" };
+
+  return { status: "success", message: "다음 스테이지인듯" };
 };
