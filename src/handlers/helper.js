@@ -1,6 +1,6 @@
 import { CLIENT_VERSION } from "../constants.js";
 import { getGameAssets } from "../init/assets.js";
-import { getStage, setStage } from "../models/stage.model.js";
+import { createStage, getStage, setStage } from "../models/stage.model.js";
 import { getUser, removeUser } from "../models/user.model.js";
 import handlerMapping from "./handlerMapping.js";
 
@@ -13,6 +13,8 @@ export const handleDisconnect = (socket, uuid) => {
 export const handlerConnection = (socket, uuid) => {
   console.log(`새로운 유저 접속:${uuid} 의 socket ID :${socket.id}`);
   console.log(`현재 접송중인 유저:`, getUser());
+
+  createStage(uuid);
 
   socket.emit("connection", { uuid }); //connection발사
 };
