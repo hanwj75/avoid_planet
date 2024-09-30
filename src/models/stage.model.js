@@ -13,6 +13,6 @@ export const getStage = (uuid) => {
 };
 
 //다음 스테이지를 추가?
-export const setStage = (uuid, id) => {
-  return stages[uuid].push({ id }); //스테이지의 ID
+export const setStage = (uuid, id, timeStamp) => {
+  return stages[uuid].push({ id, timeStamp }); //스테이지의 ID
 };
