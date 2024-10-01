@@ -4,7 +4,7 @@ class Score {
   score = 0;
   HIGH_SCORE_KEY = "highScore";
   stageChange = true;
-
+  currentStage = 1000;
   constructor(ctx, scaleRatio) {
     this.ctx = ctx;
     this.canvas = ctx.canvas;
@@ -13,19 +13,42 @@ class Score {
 
   update(deltaTime) {
     this.score += deltaTime * 0.01;
-    if (Math.floor(this.score) === 10 && this.stageChange) {
-      console.log(this.score);
+    if (Math.floor(this.score) % 100 === 0 && this.stageChange) {
       this.stageChange = false;
-      sendEvent(11, { currentStage: 1000, targetStage: 1001 });
+
+      console.log("현재 스테이지:", this.currentStage);
+      sendEvent(11, {
+        currentStage: this.currentStage,
+        targetStage: this.currentStage + 1,
+        clientTime: this.score,
+      });
+
+      this.currentStage += 1;
+    }
+    if (Math.floor(this.score) % 100 !== 0) {
+      this.stageChange = true;
+    }
+
+    if (this.currentStage === 1005) {
+      this.score = this.score;
     }
   }
 
   getItem(itemId) {
-    this.score += 0;
+    // const scoreMap = {
+    //   1: 10,
+    //   2: 50,
+    //   3: 100,
+    //   4: 1000,
+    // };
+    // if (scoreMap[itemId]) {
+    //   this.score += scoreMap[itemId];
+    // }
   }
 
   reset() {
     this.score = 0;
+    this.currentStage = 1000;
   }
 
   setHighScore() {
