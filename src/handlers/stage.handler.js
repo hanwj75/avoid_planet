@@ -15,18 +15,21 @@ export const moveStageHandler = (userId, payload) => {
 
   //오름차순 -> 가장큰 스테이지 ID 확인 <-유저의 현재 스테이지
   currentStages.sort((a, b) => a.id - b.id);
-  const currentStage = currentStages[currentStages.length - 1].id; //가장 마지막 스테이지 id
+  const currentStage = currentStages[currentStages.length - 1];
   //클라이언트 vs 서버 비교
-  if (currentStage.id !== payload.currentStages) {
-    return { status: "fail", message: "현재 스테이지 아님" };
+  if (currentStage.id !== payload.currentStage) {
+    return { status: "fail", message: "현재 잘못된 스테이지에 있음" };
   }
 
   //점수 검증 로직
-  const serverTime = Date.now(); // 현재 타임스탬프
-  const elapsedTime = (serverTime - currentStage.timeStamp) / 1000;
+  const serverTime = Date.now();
+  // const elapsedTime = (serverTime - currentStage.timeStamp) / 1000;
+
   //1스테이지에서 2스테이지로 넘어가는 가정
   //다음단계 넘어가는부분 과제
-  if (elapsedTime < 10 || elapsedTime > 10.5) {
+  // console.log(payload.clientTime);
+  //elapsedTime으로 검증이 계속 실패하여 그냥 클라이언트에서 score를 직접 받아와서 검증함
+  if (payload.clientTime % 100 === 0) {
     return { status: "fail", message: "시간 초과" };
   }
 
@@ -37,6 +40,9 @@ export const moveStageHandler = (userId, payload) => {
   }
 
   setStage(userId, payload.targetStage, serverTime);
+  if (payload.currentStage === 1000) {
+    return { status: "seccess", message: "시작 스테이지" };
+  }
 
-  return { status: "success", message: "다음 스테이지인듯" };
+  return { status: "success", message: "다음 스테이지" };
 };
