@@ -1,8 +1,8 @@
 import Cactus from "./Cactus.js";
 
 class CactiController {
-  CACTUS_INTERVAL_MIN = 100;
-  CACTUS_INTERVAL_MAX = 500;
+  CACTUS_INTERVAL_MIN = 1000;
+  CACTUS_INTERVAL_MAX = 5000;
 
   nextCactusInterval = null;
   cacti = [];
