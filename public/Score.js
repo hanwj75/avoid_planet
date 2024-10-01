@@ -28,22 +28,18 @@ class Score {
     if (Math.floor(this.score) % 100 !== 0) {
       this.stageChange = true;
     }
-
-    if (this.currentStage === 1005) {
-      this.score = this.score;
-    }
   }
 
   getItem(itemId) {
-    // const scoreMap = {
-    //   1: 10,
-    //   2: 50,
-    //   3: 100,
-    //   4: 1000,
-    // };
-    // if (scoreMap[itemId]) {
-    //   this.score += scoreMap[itemId];
-    // }
+    const scoreMap = {
+      1: 10,
+      2: 50,
+      3: 100,
+      4: 1000,
+    };
+    if (scoreMap[itemId]) {
+      this.score += scoreMap[itemId];
+    }
   }
 
   reset() {
