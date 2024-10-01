@@ -9,16 +9,17 @@ import { sendEvent } from "./Socket.js";
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
+//게임 속도 조절
 const GAME_SPEED_START = 1;
 const GAME_SPEED_INCREMENT = 0.00001;
 
 // 게임 크기
-const GAME_WIDTH = 800;
-const GAME_HEIGHT = 200;
+const GAME_WIDTH = 1000;
+const GAME_HEIGHT = 480;
 
 // 플레이어
 // 800 * 200 사이즈의 캔버스에서는 이미지의 기본크기가 크기때문에 1.5로 나눈 값을 사용. (비율 유지)
-const PLAYER_WIDTH = 88 / 1.5; // 58
+const PLAYER_WIDTH = 88 / 1; // 58
 const PLAYER_HEIGHT = 94 / 1.5; // 62
 const MAX_JUMP_HEIGHT = GAME_HEIGHT;
 const MIN_JUMP_HEIGHT = 150;
@@ -30,9 +31,10 @@ const GROUND_SPEED = 0.5;
 
 // 선인장
 const CACTI_CONFIG = [
-  { width: 48 / 1.5, height: 100 / 1.5, image: "images/cactus_1.png" },
-  { width: 98 / 1.5, height: 100 / 1.5, image: "images/cactus_2.png" },
-  { width: 68 / 1.5, height: 70 / 1.5, image: "images/cactus_3.png" },
+  { width: 50 / 1.5, height: 50 / 1.5, image: "images/빨간공-removebg-preview.png" },
+  { width: 70 / 1, height: 70 / 1, image: "images/초록공-removebg-preview.png" },
+  { width: 99 / 1.5, height: 99 / 1.5, image: "images/파란공-removebg-preview.png" },
+  { width: 100 / 1.5, height: 100 / 1.5, image: "images/테스트용1-removebg-preview.png" },
 ];
 
 // 아이템
@@ -134,22 +136,23 @@ if (screen.orientation) {
   screen.orientation.addEventListener("change", setScreen);
 }
 
+//게임 시작 종료 텍스트 부분
 function showGameOver() {
-  const fontSize = 70 * scaleRatio;
+  const fontSize = 50 * scaleRatio;
   ctx.font = `${fontSize}px Verdana`;
-  ctx.fillStyle = "grey";
-  const x = canvas.width / 4.5;
+  ctx.fillStyle = "red";
+  const x = canvas.width / 6;
   const y = canvas.height / 2;
-  ctx.fillText("GAME OVER", x, y);
+  ctx.fillText("당신은 우주의 똥이 되었습니다...", x, y);
 }
 
 function showStartGameText() {
-  const fontSize = 40 * scaleRatio;
+  const fontSize = 45 * scaleRatio;
   ctx.font = `${fontSize}px Verdana`;
-  ctx.fillStyle = "grey";
-  const x = canvas.width / 14;
+  ctx.fillStyle = "Pink";
+  const x = canvas.width / 100;
   const y = canvas.height / 2;
-  ctx.fillText("Tap Screen or Press Space To Start", x, y);
+  ctx.fillText("우주 여행을 시작하려면 아무키나 입력하세요.", x, y);
 }
 
 function updateGameSpeed(deltaTime) {
@@ -200,13 +203,13 @@ function gameLoop(currentTime) {
   if (!gameover && !waitingToStart) {
     // update
     // 땅이 움직임
-    ground.update(gameSpeed, deltaTime);
+    ground.update(gameSpeed, deltaTime - 6);
     // 선인장
-    cactiController.update(gameSpeed, deltaTime);
+    cactiController.update(gameSpeed, deltaTime * 2);
     itemController.update(gameSpeed, deltaTime);
     // 달리기
-    player.update(gameSpeed, deltaTime);
-    updateGameSpeed(deltaTime);
+    player.update(gameSpeed, deltaTime - 1);
+    updateGameSpeed(deltaTime + 1);
 
     score.update(deltaTime);
   }
@@ -222,9 +225,9 @@ function gameLoop(currentTime) {
   }
 
   // draw
+  ground.draw();
   player.draw();
   cactiController.draw();
-  ground.draw();
   score.draw();
   itemController.draw();
 
