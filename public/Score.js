@@ -5,6 +5,7 @@ class Score {
   HIGH_SCORE_KEY = "highScore";
   stageChange = true;
   currentStage = 1000;
+  scorePerSecond = 0;
   constructor(ctx, scaleRatio) {
     this.ctx = ctx;
     this.canvas = ctx.canvas;
@@ -12,7 +13,8 @@ class Score {
   }
 
   update(deltaTime) {
-    this.score += deltaTime * 0.01;
+    this.score += deltaTime * 0.01 + this.scorePerSecond;
+
     if (Math.floor(this.score) % 100 === 0 && this.stageChange) {
       this.stageChange = false;
 
@@ -20,10 +22,11 @@ class Score {
       sendEvent(11, {
         currentStage: this.currentStage,
         targetStage: this.currentStage + 1,
-        clientTime: this.score,
+        clientScore: this.score,
       });
 
       this.currentStage += 1;
+      this.scorePerSecond += 0.01;
     }
     if (Math.floor(this.score) % 100 !== 0) {
       this.stageChange = true;
@@ -45,6 +48,7 @@ class Score {
   reset() {
     this.score = 0;
     this.currentStage = 1000;
+    this.scorePerSecond = 0;
   }
 
   setHighScore() {
@@ -64,13 +68,18 @@ class Score {
 
     const fontSize = 20 * this.scaleRatio;
     this.ctx.font = `${fontSize}px serif`;
-    this.ctx.fillStyle = "#525250";
+    this.ctx.fillStyle = "#11111";
 
     const scoreX = this.canvas.width - 75 * this.scaleRatio;
     const highScoreX = scoreX - 125 * this.scaleRatio;
 
     const scorePadded = Math.floor(this.score).toString().padStart(6, 0);
     const highScorePadded = highScore.toString().padStart(6, 0);
+
+    // "STAGE" 텍스트를 맨 왼쪽에 배치
+    const stageText = `STAGE ${this.currentStage - 1000}`;
+    const stageX = 20 * this.scaleRatio; // 왼쪽 여백
+    this.ctx.fillText(stageText, stageX, y);
 
     this.ctx.fillText(scorePadded, scoreX, y);
     this.ctx.fillText(`HI ${highScorePadded}`, highScoreX, y);

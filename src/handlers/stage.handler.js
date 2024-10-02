@@ -29,7 +29,7 @@ export const moveStageHandler = (userId, payload) => {
   //다음단계 넘어가는부분 과제
   // console.log(payload.clientTime);
   //elapsedTime으로 검증이 계속 실패하여 그냥 클라이언트에서 score를 직접 받아와서 검증함
-  if (payload.clientTime % 100 === 0) {
+  if (payload.clientScore % 100 === 0) {
     return { status: "fail", message: "시간 초과" };
   }
 

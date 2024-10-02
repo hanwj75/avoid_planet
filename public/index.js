@@ -203,7 +203,7 @@ function gameLoop(currentTime) {
   if (!gameover && !waitingToStart) {
     // update
     // 땅이 움직임
-    ground.update(gameSpeed, deltaTime - 6);
+    ground.update(gameSpeed, deltaTime - 4);
     // 선인장
     cactiController.update(gameSpeed, deltaTime * 2);
     itemController.update(gameSpeed, deltaTime);

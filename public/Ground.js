@@ -11,7 +11,7 @@ class Ground {
     this.y = this.canvas.height - this.height;
 
     this.groundImage = new Image();
-    this.groundImage.src = "images/우주.jpg";
+    this.groundImage.src = "images/우주2.jpg";
   }
 
   update(gameSpeed, deltaTime) {
