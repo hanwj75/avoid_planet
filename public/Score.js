@@ -5,7 +5,6 @@ class Score {
   HIGH_SCORE_KEY = "highScore";
   stageChange = true;
   currentStage = 1000;
-  scorePerSecond = 0;
   constructor(ctx, scaleRatio) {
     this.ctx = ctx;
     this.canvas = ctx.canvas;
@@ -13,8 +12,7 @@ class Score {
   }
 
   update(deltaTime) {
-    this.score += deltaTime * 0.01 + this.scorePerSecond;
-
+    this.score += deltaTime * 0.01;
     if (Math.floor(this.score) % 100 === 0 && this.stageChange) {
       this.stageChange = false;
 
@@ -26,7 +24,6 @@ class Score {
       });
 
       this.currentStage += 1;
-      this.scorePerSecond += 0.01;
     }
     if (Math.floor(this.score) % 100 !== 0) {
       this.stageChange = true;
@@ -48,7 +45,6 @@ class Score {
   reset() {
     this.score = 0;
     this.currentStage = 1000;
-    this.scorePerSecond = 0;
   }
 
   setHighScore() {
