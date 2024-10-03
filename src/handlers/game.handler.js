@@ -9,14 +9,14 @@ export const gameStart = (uuid, payload) => {
   //새 게임 시작시 이전 데이터 삭제
   clearStage(uuid);
   //stages 배열의 0번째 === 첫 스테이지
-  setStage(uuid, stages.data[0].id, payload.timeStamp);
+  setStage(uuid, stages.data[0].id);
   console.log("스테이지:", getStage(uuid));
   return { status: "success" };
 };
 
 export const gameEnd = (uuid, payload) => {
-  //게임 종료 시 타임스탬프와 총 점수
-  const { timeStamp: gameEndTime, score } = payload;
+  //게임 종료 시 총 점수
+  const { score } = payload;
   const stages = getStage(uuid);
 
   if (!stages.length) {
@@ -25,17 +25,19 @@ export const gameEnd = (uuid, payload) => {
 
   //각 스테이지의 지속 시간을 계산하여 총 점수 계산
   let totalScore = 0;
+  let gameEndScore = score;
   stages.forEach((stage, index) => {
-    let stageEndTime;
+    let stageEnds;
+
     if (index === stages.length - 1) {
-      stageEndTime = gameEndTime;
+      stageEnds = gameEndScore;
     } else {
-      stageEndTime = stages[index + 1].timeStamp;
+      gameEndScore = stages[score];
     }
-    const stageDuration = (stageEndTime - stage.timeStamp) / 1000;
-    totalScore += stageDuration; // 1초당 1점 스테이지마다 점수차를 내려면 json파일에 데이터 추가 과제
+    const stageDuration = gameEndScore;
+    totalScore += stageDuration;
   });
-  //점수와 타임스탬프 검증
+  //점수검증
   if (Math.abs(score - totalScore) > 5) {
     return { status: "fail", message: "점수 에러" };
   }

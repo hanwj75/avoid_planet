@@ -24,8 +24,6 @@ export const moveStageHandler = (userId, payload) => {
   }
 
   //점수 검증 로직
-  const serverTime = Date.now();
-  // const elapsedTime = (serverTime - currentStage.timeStamp) / 1000;
 
   //1스테이지에서 2스테이지로 넘어가는 가정
   //다음단계 넘어가는부분 과제
@@ -41,7 +39,7 @@ export const moveStageHandler = (userId, payload) => {
     return { status: "fail", message: "다음 스테이지가 없음" };
   }
 
-  setStage(userId, payload.targetStage, serverTime);
+  setStage(userId, payload.targetStage);
   if (payload.currentStage === 1000) {
     return { status: "seccess", message: "시작 스테이지" };
   }
