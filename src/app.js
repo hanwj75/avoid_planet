@@ -11,6 +11,7 @@ const PORT = 3333;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
+
 initSocket(server);
 
 server.listen(PORT, async () => {
