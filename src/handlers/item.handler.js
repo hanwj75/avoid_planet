@@ -17,7 +17,7 @@ export const itemHandler = (userId, payload) => {
   let currentItems = getItems(userId);
   if (!currentItems) {
     console.log(currentItems);
-    return { status: "fail", message: "아이템이 상했어요" };
+    return { status: "fail", message: "스테이지에 있을수 없는 아이템" };
   }
   console.log(currentItems);
 
@@ -25,7 +25,8 @@ export const itemHandler = (userId, payload) => {
     items.itemFrequency = false;
     setTimeout(() => {
       items.itemFrequency = true;
-    }, 1000);
+    }, 750);
+    console.log(items.itemFrequency);
     setItems(userId, payload.currentItem);
   } else if (!items.itemFrequency) {
     return { status: "fail", message: "범법 행위를 자제해주세요." };

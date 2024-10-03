@@ -17,7 +17,7 @@ class Score {
 
   update(deltaTime) {
     this.score += (deltaTime + stages.data[this.stageIndex].scorePerSecond) * 0.01;
-    if (Math.floor(this.score) > stages.data[this.stageIndex].score && this.stageChange) {
+    if (Math.floor(this.score) > stages.data[this.stageIndex].score) {
       this.stageChange = false;
 
       console.log("현재 스테이지:", stages.data[this.stageIndex].id);

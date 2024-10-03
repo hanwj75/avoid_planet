@@ -171,6 +171,7 @@ function reset() {
   score.reset();
   gameSpeed = GAME_SPEED_START;
   itemController.reset();
+  score = new Score(ctx, scaleRatio);
   sendEvent(2, { timeStamp: Date.now() });
 }
 
