@@ -170,6 +170,7 @@ function reset() {
   cactiController.reset();
   score.reset();
   gameSpeed = GAME_SPEED_START;
+  itemController.reset();
   sendEvent(2, { timeStamp: Date.now() });
 }
 
