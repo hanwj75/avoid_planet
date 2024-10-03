@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 // path.dirname() 함수는 파일 경로에서 디렉토리 경로만 추출 (파일 이름을 제외한 디렉토리의 전체 경로)
 const __dirname = path.dirname(__filename);
-const basePath = path.join(__dirname, "../../assets");
+const basePath = path.join(__dirname, "../../public/assets");
 //파일 읽는 함수
 //비동기 병렬 비동기 파일을 병렬로 동시에 처리한다.
 const readFileAsync = (filename) => {

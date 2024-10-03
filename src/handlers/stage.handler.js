@@ -10,6 +10,7 @@ export const moveStageHandler = (userId, payload) => {
   //현재 스테이지 정보
   let currentStages = getStage(userId);
   if (!currentStages.length) {
+    console.log(currentStages);
     return { status: "fail", message: "스테이지가 없습니다." };
   }
 
@@ -18,6 +19,7 @@ export const moveStageHandler = (userId, payload) => {
   const currentStage = currentStages[currentStages.length - 1];
   //클라이언트 vs 서버 비교
   if (currentStage.id !== payload.currentStage) {
+    console.log(payload.currentStage);
     return { status: "fail", message: "현재 잘못된 스테이지에 있음" };
   }
 
