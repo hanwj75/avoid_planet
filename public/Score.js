@@ -17,7 +17,7 @@ class Score {
 
   update(deltaTime) {
     this.score += (deltaTime + stages.data[this.stageIndex].scorePerSecond) * 0.01;
-    if (Math.floor(this.score) % 100 === 0 && this.stageChange) {
+    if (Math.floor(this.score) > stages.data[this.stageIndex].score && this.stageChange) {
       this.stageChange = false;
 
       console.log("현재 스테이지:", stages.data[this.stageIndex].id);
@@ -26,19 +26,29 @@ class Score {
           currentStage: stages.data[this.stageIndex].id,
           targetStage: stages.data[this.stageIndex + 1].id,
           clientScore: this.score,
+          stageIndex: this.stageIndex,
         });
         this.stageIndex += 1;
+      } else if (!this.stageIndex + 1 < stages.data.length) {
+        sendEvent(3, {
+          score: Math.floor(this.score),
+        });
       }
     }
-    if (Math.floor(this.score) % 100 !== 0) {
+    if (Math.floor(this.score) < stages.data[this.stageIndex].score) {
       this.stageChange = true;
     }
   }
 
   getItem(itemId) {
+    //아이템 ID와 items.json의 id값이 일치할
     for (let i = 0; i < items.data.length; i++) {
       if (itemId === items.data[i].id) {
         this.score += items.data[i].score;
+        sendEvent(10, {
+          currentItem: items.data[i].id,
+          stageIndex: this.stageIndex,
+        });
       }
     }
   }

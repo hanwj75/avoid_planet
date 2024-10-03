@@ -3,8 +3,8 @@ import itemUnlock from "./assets/item_unlock.json" with { type: "json" };
 import stages from "./assets/stage.json" with { type: "json" };
 import { score } from "./index.js";
 class ItemController {
-  INTERVAL_MIN = 100;
-  INTERVAL_MAX = 1200;
+  INTERVAL_MIN = 1000;
+  INTERVAL_MAX = 5000;
 
   nextInterval = null;
   items = [];
@@ -28,8 +28,6 @@ class ItemController {
   }
 
   createItem() {
-    console.log("asd:", score.stageIndex);
-
     const index = this.getRandomNumber(0, itemUnlock.data[score.stageIndex - 1].item_id.length - 1);
     const itemInfo = this.itemImages[index];
     const x = this.canvas.width * 1.5;
