@@ -5,7 +5,6 @@ const stages = {};
 //스테이지 초기화 / 처음시작?죽을경우? 새로고침?
 export const createStage = (uuid) => {
   stages[uuid] = [];
-  console.log(stages[uuid]);
 };
 
 //현재 유저의 스테이지 정보
