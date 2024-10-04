@@ -64,7 +64,6 @@ class Player {
     if (event.code === "KeyX") {
       this.sitting = true;
       this.image = this.sittingImage;
-      console.log("방패들기");
     }
   };
 
@@ -74,7 +73,7 @@ class Player {
       this.GRAVITY = 1;
     }
 
-    //일어날때
+    //방패내리기
     if (event.code === "KeyX") {
       this.sitting = false;
       this.image = this.standingStillImage;
