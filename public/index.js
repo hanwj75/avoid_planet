@@ -31,7 +31,7 @@ const GROUND_SPEED = 0.5;
 
 // 선인장
 const CACTI_CONFIG = [
-  { width: 50 / 0.8, height: 50 / 0.8, image: "images/몬스터1.png" },
+  { width: 100 / 0.8, height: 100 / 0.8, image: "images/몬스터1.png" },
   { width: 70 / 0.3, height: 70 / 0.3, image: "images/초록공-removebg-preview.png" },
   { width: 99 / 0.5, height: 99 / 0.5, image: "images/파란공-removebg-preview.png" },
   { width: 100 / 1.5, height: 100 / 1.5, image: "images/테스트용1-removebg-preview.png" },
@@ -39,12 +39,42 @@ const CACTI_CONFIG = [
 
 // 아이템
 const ITEM_CONFIG = [
-  { width: 50 / 1.5, height: 50 / 1.5, id: 1, image: "images/items/pokeball_red.png" },
-  { width: 50 / 1.5, height: 50 / 1.5, id: 2, image: "images/items/pokeball_yellow.png" },
-  { width: 50 / 1.5, height: 50 / 1.5, id: 3, image: "images/items/pokeball_purple.png" },
-  { width: 50 / 1.2, height: 50 / 1.2, id: 4, image: "images/items/pokeball_cyan.png" },
-  { width: 50 / 1.1, height: 50 / 1.1, id: 5, image: "images/items/pokeball_orange.png" },
-  { width: 50 / 0.9, height: 50 / 0.9, id: 6, image: "images/items/pokeball_pink.png" },
+  {
+    width: 100 / 1.5,
+    height: 100 / 1.5,
+    id: 1,
+    image: "images/items/스크린샷_2024-10-06_001338-removebg-preview.png",
+  },
+  {
+    width: 100 / 1.4,
+    height: 100 / 1.4,
+    id: 2,
+    image: "images/items/스크린샷_2024-10-06_001345-removebg-preview.png",
+  },
+  {
+    width: 100 / 1.3,
+    height: 100 / 1.3,
+    id: 3,
+    image: "images/items/스크린샷_2024-10-06_001354-removebg-preview.png",
+  },
+  {
+    width: 100 / 1.2,
+    height: 100 / 1.2,
+    id: 4,
+    image: "images/items/스크린샷_2024-10-06_001401-removebg-preview.png",
+  },
+  {
+    width: 100 / 1.1,
+    height: 100 / 1.1,
+    id: 5,
+    image: "images/items/스크린샷_2024-10-06_001406-removebg-preview.png",
+  },
+  {
+    width: 100 / 0.9,
+    height: 100 / 0.9,
+    id: 6,
+    image: "images/items/스크린샷_2024-10-06_001411-removebg-preview.png",
+  },
 ];
 
 // 게임 요소들
@@ -167,7 +197,7 @@ function showGameClear() {
   let y = canvas.height / 2;
 
   // 텍스트를 줄바꿈 문자로 분리
-  const lines = ["모든 STAGE 클리어!", "당신은 우주의 별이 되었습니다⭐"];
+  const lines = ["모든 은하를 통과했습니다!", "지구로 돌아갑니다🌎"];
 
   // 각 줄을 그리기
   lines.forEach((line) => {

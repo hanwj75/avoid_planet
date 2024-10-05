@@ -44,5 +44,5 @@ export const gameEnd = (uuid, payload) => {
     return { status: "fail", message: "점수 에러" };
   }
 
-  return { status: "success", message: "게임 종료", score };
+  return { status: "success", message: "게임 클리어", score };
 };
