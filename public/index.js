@@ -14,8 +14,8 @@ const GAME_SPEED_START = 1;
 const GAME_SPEED_INCREMENT = 0.00001;
 
 // 게임 크기
-const GAME_WIDTH = 1000;
-const GAME_HEIGHT = 480;
+const GAME_WIDTH = 1500;
+const GAME_HEIGHT = 1000;
 
 // 플레이어
 // 800 * 200 사이즈의 캔버스에서는 이미지의 기본크기가 크기때문에 1.5로 나눈 값을 사용. (비율 유지)
@@ -31,9 +31,9 @@ const GROUND_SPEED = 0.5;
 
 // 선인장
 const CACTI_CONFIG = [
-  { width: 50 / 1.5, height: 50 / 1.5, image: "images/빨간공-removebg-preview.png" },
-  { width: 70 / 1, height: 70 / 1, image: "images/초록공-removebg-preview.png" },
-  { width: 99 / 1.5, height: 99 / 1.5, image: "images/파란공-removebg-preview.png" },
+  { width: 50 / 0.8, height: 50 / 0.8, image: "images/몬스터1.png" },
+  { width: 70 / 0.3, height: 70 / 0.3, image: "images/초록공-removebg-preview.png" },
+  { width: 99 / 0.5, height: 99 / 0.5, image: "images/파란공-removebg-preview.png" },
   { width: 100 / 1.5, height: 100 / 1.5, image: "images/테스트용1-removebg-preview.png" },
 ];
 
@@ -157,6 +157,26 @@ function showStartGameText() {
   ctx.fillText("우주 여행을 시작하려면 아무키나 입력하세요.", x, y);
 }
 
+//모든 스테이지 클리어시 나올 텍스트
+function showGameClear() {
+  const fontSize = 80 * scaleRatio;
+  ctx.font = `${fontSize}px Verdana`;
+  ctx.fillStyle = "yellow";
+
+  const x = canvas.width / 10;
+  let y = canvas.height / 2;
+
+  // 텍스트를 줄바꿈 문자로 분리
+  const lines = ["모든 STAGE 클리어!", "당신은 우주의 별이 되었습니다⭐"];
+
+  // 각 줄을 그리기
+  lines.forEach((line) => {
+    ctx.fillText(line, x, y);
+    // y 위치를 아래로 이동
+    y += fontSize; // 다음 줄의 y 위치 조정
+  });
+}
+
 function updateGameSpeed(deltaTime) {
   gameSpeed += deltaTime * GAME_SPEED_INCREMENT;
 }
@@ -175,7 +195,7 @@ function reset() {
   sendEvent(2, { timeStamp: Date.now() });
 }
 
-function setupGameReset() {
+export function setupGameReset() {
   if (!hasAddedEventListenersForRestart) {
     hasAddedEventListenersForRestart = true;
 
@@ -223,6 +243,12 @@ function gameLoop(currentTime) {
     score.setHighScore();
     setupGameReset();
   }
+  //게임 클리어시
+  if (score.gameClear === true) {
+    gameover = true;
+    score.setHighScore();
+    setupGameReset();
+  }
   const collideWithItem = itemController.collideWith(player);
   if (collideWithItem && collideWithItem.itemId) {
     score.getItem(collideWithItem.itemId);
@@ -235,8 +261,12 @@ function gameLoop(currentTime) {
   score.draw();
   itemController.draw();
 
-  if (gameover) {
+  if (gameover && !score.gameClear) {
     showGameOver();
+  }
+
+  if (score.gameClear) {
+    showGameClear();
   }
 
   if (waitingToStart) {
@@ -252,4 +282,4 @@ requestAnimationFrame(gameLoop);
 
 window.addEventListener("keyup", reset, { once: true });
 
-export { score };
+export { score, gameover };

@@ -2,12 +2,18 @@ import { sendEvent } from "./Socket.js";
 import stages from "./assets/stage.json" with { type: "json" };
 import itemUnlock from "./assets/item_unlock.json" with { type: "json" };
 import items from "./assets/item.json" with { type: "json" };
+import { gameover, setupGameReset } from "./index.js";
+import { score } from "./index.js";
 
 class Score {
   score = 0;
   HIGH_SCORE_KEY = "highScore";
   stageChange = true;
   stageIndex = 0;
+  stageMessageVisible = false; // 스테이지 메시지 표시 여부
+  bossMessageVisible = false;
+  stageMessageTimer = 0; // 메시지 표시 시간
+  gameClear = false;
 
   constructor(ctx, scaleRatio) {
     this.ctx = ctx;
@@ -29,7 +35,13 @@ class Score {
           stageIndex: this.stageIndex,
         });
         this.stageIndex += 1;
-      } else if (!this.stageIndex + 1 < stages.data.length) {
+
+        // 스테이지 메시지 표시
+        this.stageMessageVisible = true;
+        this.stageMessageTimer = 0; // 타이머 초기화
+      } else if (!(this.stageIndex === stages.data[this.stageIndex].id.length - 1)) {
+        this.gameClear = true;
+
         sendEvent(3, {
           score: Math.floor(this.score),
         });
@@ -38,10 +50,17 @@ class Score {
     if (Math.floor(this.score) < stages.data[this.stageIndex].score) {
       this.stageChange = true;
     }
+    // 스테이지 메시지 타이머 업데이트
+    if (this.stageMessageVisible) {
+      this.stageMessageTimer += deltaTime;
+      if (this.stageMessageTimer > 1500) {
+        // 1.5초 후에 메시지 사라짐
+        this.stageMessageVisible = false;
+      }
+    }
   }
 
   getItem(itemId) {
-    //아이템 ID와 items.json의 id값이 일치할
     for (let i = 0; i < items.data.length; i++) {
       if (itemId === items.data[i].id) {
         this.score += items.data[i].score;
@@ -52,6 +71,7 @@ class Score {
       }
     }
   }
+
   reset() {
     this.score = 0;
     this.stageIndex = 0;
@@ -89,6 +109,26 @@ class Score {
 
     this.ctx.fillText(scorePadded, scoreX, y);
     this.ctx.fillText(`HI ${highScorePadded}`, highScoreX, y);
+
+    // 스테이지 메시지 가운데 표시
+
+    if (this.stageMessageVisible) {
+      const fontSize = 100 * this.scaleRatio;
+      this.ctx.font = `${fontSize}px Verdana`;
+      this.ctx.fillStyle = "purple";
+      const x = this.canvas.width / 3.1;
+      const y = this.canvas.height / 1.9;
+      this.ctx.fillText(`STAGE${this.stageIndex}`, x, y);
+    }
+
+    if (this.bossMessageVisible) {
+      const fontSize = 100 * this.scaleRatio;
+      this.ctx.font = `${fontSize}px Verdana`;
+      this.ctx.fillStyle = "red";
+      const x = this.canvas.width / 3.1;
+      const y = this.canvas.height / 1.9;
+      this.ctx.fillText(`BOSS STAGE`, x, y);
+    }
   }
 }
 

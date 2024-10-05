@@ -3,6 +3,11 @@ class Player {
   walkAnimationTimer = this.WALK_ANIMATION_TIMER;
   dinoRunImages = [];
 
+  //기모으기 타이머
+  ENERGY_TIMER = 10;
+  energyAnimationTimer = this.ENERGY_TIMER;
+  energyImages = [];
+
   //점프 상태값
   jumpPressed = false;
   jumpInProgress = false;
@@ -36,6 +41,17 @@ class Player {
     this.sittingImage.src = "images/방패비행기.png";
     this.image = this.sittingImage;
 
+    //기 모으기
+
+    const energyImage1 = new Image();
+    energyImage1.src = "images/기모으기1.png";
+
+    const energyImage2 = new Image();
+    energyImage2.src = "images/기모으기2.png";
+
+    this.energyImages.push(energyImage1);
+    this.energyImages.push(energyImage2);
+
     // 달리기
     const dinoRunImage1 = new Image();
     dinoRunImage1.src = "images/그냥비행기.png";
@@ -65,6 +81,17 @@ class Player {
       this.sitting = true;
       this.image = this.sittingImage;
     }
+    if (event.code === "KeyC") {
+      if (this.energyAnimationTimer <= 0 && !this.sitting) {
+        // 에너지를 모으기 애니메이션 로직 수정
+        this.energyAnimationTimer = this.ENERGY_TIMER; // 타이머 리셋
+        if (this.image === this.energyImages[0]) {
+          this.image = this.energyImages[1];
+        } else {
+          this.image = this.energyImages[0];
+        }
+      }
+    }
   };
 
   keyup = (event) => {
@@ -88,6 +115,10 @@ class Player {
     }
 
     this.jump(deltaTime);
+
+    if (this.energyAnimationTimer > 0) {
+      this.energyAnimationTimer -= deltaTime;
+    }
   }
 
   jump(deltaTime) {
