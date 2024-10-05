@@ -97,14 +97,17 @@ class Score {
     this.ctx.font = `${fontSize}px serif`;
     this.ctx.fillStyle = "#11111";
 
-    const scoreX = this.canvas.width - 75 * this.scaleRatio;
+    const scoreX = this.canvas.width - 300 * this.scaleRatio;
     const highScoreX = scoreX - 125 * this.scaleRatio;
 
-    const scorePadded = Math.floor(this.score).toString().padStart(6, 0);
+    const scorePadded =
+      `지구까지 남은거리: ${Math.floor(this.score - stages.data[this.stageIndex].score)}`
+        .toString()
+        .padStart(6, 0);
     const highScorePadded = highScore.toString().padStart(6, 0);
 
     // "STAGE" 텍스트를 맨 왼쪽에 배치
-    const stageText = `STAGE ${this.stageIndex}`;
+    const stageText = `${this.stageIndex * 340}억 은하`;
     const stageX = 20 * this.scaleRatio; // 왼쪽 여백
     this.ctx.fillText(stageText, stageX, y);
 
@@ -119,7 +122,7 @@ class Score {
       this.ctx.fillStyle = "purple";
       const x = this.canvas.width / 3.1;
       const y = this.canvas.height / 1.9;
-      this.ctx.fillText(`STAGE${this.stageIndex}`, x, y);
+      this.ctx.fillText(`${this.stageIndex * 340}억 은하`, x, y);
     }
 
     if (this.bossMessageVisible) {
