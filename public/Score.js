@@ -51,7 +51,7 @@ class Score {
       this.stageChange = true;
     }
     // 스테이지 메시지 타이머 업데이트
-    if (this.stageMessageVisible) {
+    if (this.stageMessageVisible && !stages.data.length - 1) {
       this.stageMessageTimer += deltaTime;
       if (this.stageMessageTimer > 1500) {
         // 1.5초 후에 메시지 사라짐
@@ -75,6 +75,7 @@ class Score {
   reset() {
     this.score = 0;
     this.stageIndex = 0;
+    this.gameClear = false;
   }
 
   setHighScore() {

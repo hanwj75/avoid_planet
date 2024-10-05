@@ -32,7 +32,7 @@ class CactiController {
     const index = this.getRandomNumber(0, this.cactiImages.length - 1);
     const cactusImage = this.cactiImages[index];
     const x = this.canvas.width * 1.5;
-    const CACTUS_OFFSET = Math.floor(Math.random() * 580); // 에너지공을 맵에 랜덤위치에 생성함
+    const CACTUS_OFFSET = Math.floor(Math.random() * 700); // 에너지공을 맵에 랜덤위치에 생성함
     const y = this.canvas.height - cactusImage.height - CACTUS_OFFSET;
 
     const cactus = new Cactus(
