@@ -2,8 +2,8 @@ class Ground {
   constructor(ctx, width, height, speed, scaleRatio) {
     this.ctx = ctx;
     this.canvas = ctx.canvas;
-    this.width = width;
-    this.height = height * 20;
+    this.width = width - 10;
+    this.height = height * 50;
     this.speed = speed;
     this.scaleRatio = scaleRatio;
 
