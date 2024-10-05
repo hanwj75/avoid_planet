@@ -12,7 +12,7 @@ export const gameStart = (uuid, payload) => {
   clearItems(uuid);
   //stages 배열의 0번째 === 첫 스테이지
   setStage(uuid, stages.data[0].id);
-  console.log("스테이지:", getStage(uuid));
+  // console.log("스테이지:", getStage(uuid));
   return { status: "success" };
 };
 
