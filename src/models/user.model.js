@@ -14,6 +14,7 @@ export const getUser = () => {
 export const removeUser = (socketId) => {
   const index = users.findIndex((user) => {
     user.socketId === socketId;
+    console.log("user.socketId:", user.socketId, "socketID:", socketId);
   });
   if (index !== -1) {
     return users.splice(index, 1)[0];

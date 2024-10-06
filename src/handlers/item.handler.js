@@ -35,5 +35,5 @@ export const itemHandler = (userId, payload) => {
     return { status: "fail", message: "범법 행위를 자제해주세요." };
   }
 
-  return { status: "seccess", message: "아이템먹음" };
+  return { status: "seccess", message: `${payload.stageIndex}번 사람 구출` };
 };

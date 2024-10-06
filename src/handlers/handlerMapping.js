@@ -1,5 +1,6 @@
 import { gameEnd, gameStart } from "./game.handler.js";
 import { itemHandler } from "./item.handler.js";
+
 import { moveStageHandler } from "./stage.handler.js";
 
 const handlerMapping = {

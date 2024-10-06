@@ -7,8 +7,11 @@ const socket = io("http://localhost:3333", {
 });
 
 let userId = null;
-socket.on("response", (data) => {
-  console.log(data);
+socket.on("response", async (data) => {
+  console.log("responseClient", data);
+  if (!data || Object.keys(data).length === 0) {
+    console.log("빈 응답 수신");
+  }
 });
 
 socket.on("connection", (data) => {
@@ -16,7 +19,7 @@ socket.on("connection", (data) => {
   userId = data.uuid;
 });
 
-const sendEvent = (handlerId, payload) => {
+const sendEvent = async (handlerId, payload) => {
   socket.emit("event", {
     userId,
     clientVersion: CLIENT_VERSION,
@@ -25,4 +28,4 @@ const sendEvent = (handlerId, payload) => {
   });
 };
 
-export { sendEvent };
+export { sendEvent, userId };
