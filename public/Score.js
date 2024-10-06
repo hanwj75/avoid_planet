@@ -1,4 +1,4 @@
-import { sendEvent } from "./Socket.js";
+import { sendEvent, userId } from "./Socket.js";
 import stages from "./assets/stage.json" with { type: "json" };
 import itemUnlock from "./assets/item_unlock.json" with { type: "json" };
 import items from "./assets/item.json" with { type: "json" };
@@ -78,10 +78,15 @@ class Score {
     this.gameClear = false;
   }
 
-  setHighScore() {
-    const highScore = Number(localStorage.getItem(this.HIGH_SCORE_KEY));
-    if (this.score > highScore) {
-      localStorage.setItem(this.HIGH_SCORE_KEY, Math.floor(this.score));
+  async setHighScore() {
+    try {
+      const res = await fetch(`/api/gethighscore/${userId}`);
+
+      const data = await res.json();
+
+      console.log("data", data);
+    } catch (err) {
+      console.error(err);
     }
   }
 
@@ -100,10 +105,7 @@ class Score {
     const scoreX = this.canvas.width - 300 * this.scaleRatio;
     const highScoreX = scoreX - 125 * this.scaleRatio;
 
-    const scorePadded =
-      `지구까지 남은거리: ${Math.floor(this.score - stages.data[this.stageIndex].score)}`
-        .toString()
-        .padStart(6, 0);
+    const scorePadded = Math.floor(this.score).toString().padStart(6, 0);
     const highScorePadded = highScore.toString().padStart(6, 0);
 
     // "STAGE" 텍스트를 맨 왼쪽에 배치

@@ -45,10 +45,10 @@ export const moveStageHandler = (userId, payload) => {
 
   setStage(userId, payload.targetStage);
   if (payload.currentStage === stages.data[0].id) {
-    return { status: "seccess", message: "시작 스테이지" };
+    return { status: "success", message: "시작 스테이지" };
   }
   if (payload.currentStage === stages.data[payload.stageIndex].id.length - 1) {
-    return { status: "seccess", message: "마지막 스테이지" };
+    return { status: "success", message: "마지막 스테이지" };
   }
   return { status: "success", message: "다음 스테이지" };
 };

@@ -83,7 +83,7 @@ let ground = null;
 let cactiController = null;
 let itemController = null;
 let score = null;
-
+let clearTitle = false;
 let scaleRatio = null;
 let previousTime = null;
 let gameSpeed = GAME_SPEED_START;
@@ -215,7 +215,7 @@ function reset() {
   hasAddedEventListenersForRestart = false;
   gameover = false;
   waitingToStart = false;
-
+  clearTitle = false;
   ground.reset();
   cactiController.reset();
   score.reset();
@@ -272,13 +272,18 @@ function gameLoop(currentTime) {
     gameover = true;
     score.setHighScore();
     setupGameReset();
+    sendEvent(3, { score: Math.floor(score.score) });
   }
   //게임 클리어시
   if (score.gameClear === true) {
+    sendEvent(3, { score: Math.floor(score.score) });
     gameover = true;
     score.setHighScore();
     setupGameReset();
+    clearTitle = true;
+    score.gameClear = false;
   }
+
   const collideWithItem = itemController.collideWith(player);
   if (collideWithItem && collideWithItem.itemId) {
     score.getItem(collideWithItem.itemId);
@@ -291,11 +296,11 @@ function gameLoop(currentTime) {
   score.draw();
   itemController.draw();
 
-  if (gameover && !score.gameClear) {
+  if (gameover && !clearTitle) {
     showGameOver();
   }
 
-  if (score.gameClear) {
+  if (clearTitle) {
     showGameClear();
   }
 

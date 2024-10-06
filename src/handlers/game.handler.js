@@ -1,11 +1,13 @@
+import { Socket } from "socket.io";
 import { getGameAssets } from "../init/assets.js";
 import { clearItems } from "../models/item.model.js";
 import { clearStage, getStage, setStage } from "../models/stage.model.js";
+import { redisClient } from "../redis.js";
 
 export const gameStart = (uuid, payload) => {
+  const { stages } = getGameAssets();
   //접속하자마자 시작함
   //접속하자마자 스테이지의 정보를 넣어줘야함
-  const { stages } = getGameAssets();
 
   //새 게임 시작시 이전 데이터 삭제
   clearStage(uuid);
@@ -16,33 +18,31 @@ export const gameStart = (uuid, payload) => {
   return { status: "success" };
 };
 
-export const gameEnd = (uuid, payload) => {
+export const gameEnd = async (uuid, payload) => {
   //게임 종료 시 총 점수
+  const { stages } = getGameAssets();
   const { score } = payload;
-  const stages = getStage(uuid);
+  const userStage = getStage(uuid);
 
-  if (!stages.length) {
+  if (!userStage.length) {
+    // console.log("userStage:", userStage.length);
     return { status: "fail", message: "스테이지가 이상합니다." };
   }
+  //redis 정보 저장 갱신
 
-  //각 스테이지의 지속 시간을 계산하여 총 점수 계산
-  let totalScore = 0;
-  let gameEndScore = score;
-  stages.forEach((stage, index) => {
-    let stageEnds;
-
-    if (index === stages.length - 1) {
-      stageEnds = gameEndScore;
-    } else {
-      gameEndScore = stages[score];
+  const readScore = await redisClient.smembers("user");
+  const mapRead = readScore.map((x) => x.split(":"));
+  const filterRead = mapRead.filter((userUUID) => userUUID[0] === uuid);
+  // console.log(filterRead);
+  if (filterRead.length === 0) {
+    await redisClient.sadd("user", `${uuid}:${score}`);
+    return { status: "success", message: "게임 종료" };
+  } else {
+    if (filterRead[0][1] < score) {
+      await redisClient.srem("user", `${filterRead[0].join(":")}`);
+      await redisClient.sadd("user", `${uuid}:${score}`);
+      console.log("score:", score);
+      return { status: "success", message: "점수 업데이트" };
     }
-    const stageDuration = gameEndScore;
-    totalScore += stageDuration;
-  });
-  //점수검증
-  if (Math.abs(score - totalScore) > 5) {
-    return { status: "fail", message: "점수 에러" };
   }
-
-  return { status: "success", message: "게임 클리어", score };
 };
