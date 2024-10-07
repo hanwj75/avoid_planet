@@ -14,6 +14,7 @@ class Score {
   bossMessageVisible = false;
   stageMessageTimer = 0; // 메시지 표시 시간
   gameClear = false;
+  scoreUpdate = 0;
 
   constructor(ctx, scaleRatio) {
     this.ctx = ctx;
@@ -22,7 +23,11 @@ class Score {
   }
 
   update(deltaTime) {
-    this.score += (deltaTime + stages.data[this.stageIndex].scorePerSecond) * 0.01;
+    this.scoreUpdate += (deltaTime + stages.data[this.stageIndex].scorePerSecond) * 0.01;
+    if (this.scoreUpdate >= stages.data[this.stageIndex].scorePerSecond) {
+      this.score += this.scoreUpdate;
+      this.scoreUpdate -= this.scoreUpdate;
+    }
     if (Math.floor(this.score) > stages.data[this.stageIndex].score) {
       this.stageChange = false;
 
@@ -77,14 +82,16 @@ class Score {
     this.stageIndex = 0;
     this.gameClear = false;
   }
-
+  /**
+   * @todo 총 점수 반영안됨 그거 수정해야함
+   */
   async setHighScore() {
     try {
       const res = await fetch(`/api/gethighscore/${userId}`);
 
       const data = await res.json();
 
-      console.log("data", data);
+      // console.log("data", data);
     } catch (err) {
       console.error(err);
     }
@@ -108,7 +115,7 @@ class Score {
     const scorePadded = Math.floor(this.score).toString().padStart(6, 0);
     const highScorePadded = highScore.toString().padStart(6, 0);
 
-    // "STAGE" 텍스트를 맨 왼쪽에 배치
+    // "은하" 텍스트를 맨 왼쪽에 배치
     const stageText = `${this.stageIndex * 340}억 은하`;
     const stageX = 20 * this.scaleRatio; // 왼쪽 여백
     this.ctx.fillText(stageText, stageX, y);
