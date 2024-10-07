@@ -30,15 +30,21 @@ export const gameEnd = async (uuid, payload) => {
   }
   //redis 정보 저장 갱신
 
+  //현재 redis에 존재하는 user의 정보를 모두 조회한다.
   const readScore = await redisClient.smembers("user");
+  // 조회한 정보를 :를 기준으로 나눠준다.
   const mapRead = readScore.map((x) => x.split(":"));
+  //2개로 나누어진 값중 0번째 인덱스에값이 uuid와 일치하는지 확인
   const filterRead = mapRead.filter((userUUID) => userUUID[0] === uuid);
   // console.log(filterRead);
   if (filterRead.length === 0) {
+    //해당 uuid가 존재하지 않는다면 새로 추가
     await redisClient.sadd("user", `${uuid}:${score}`);
     return { status: "success", message: "게임 종료" };
   } else {
     if (filterRead[0][1] < score) {
+      //이미 존재하는 uuid의 score가 새로 달성항 scoer보다 작다면
+      //기존 데이터를 삭제하고 새로운 데이터를 재생성한다.
       await redisClient.srem("user", `${filterRead[0].join(":")}`);
       await redisClient.sadd("user", `${uuid}:${score}`);
       console.log("score:", score);
